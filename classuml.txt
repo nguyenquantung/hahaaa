@@ -1,0 +1,94 @@
+
+class Customer {
+    - id: int
+    - name: string
+    - address: string
+    - phone: string
+    + orderFood(food: Food): void
+    + payInvoice(invoice: Invoice): void
+}
+
+class Food {
+    - id: int
+    - name: string
+    - price: double
+}
+
+class Order {
+    - id: int
+    - customer: Customer
+    - employee: Employee
+    - foods: List<Food>
+    + addFood(food: Food): void
+    + removeFood(food: Food): void
+}
+
+class Supplier {
+    - id: int
+    - name: string
+    - address: string
+    - phone: string
+    + buyIngredient(ingredient: Ingredient): void
+    + payInvoice(invoice: Invoice): void
+}
+
+class Ingredient {
+    - id: int
+    - name: string
+    - price: double
+}
+
+class Inventory {
+    - id: int
+    - product: Product
+    - quantity: int
+}
+
+class Product {
+    - id: int
+    - name: string
+    - ingredients: List<Ingredient>
+}
+
+class Shipper {
+    - id: int
+    - name: string
+    - address: string
+    - phone: string
+    + deliver(order: Order): void
+}
+
+class Employee {
+    - id: int
+    - name: string
+    - position: string
+    - phone: string
+    + createOrder(customer: Customer, foods: List<Food>): Order
+    + createInvoice(order: Order): Invoice
+    + takePayment(invoice: Invoice, method: string): void
+    + generateReport(): void
+}
+
+class Invoice {
+    - id: int
+    - order: Order
+    - invoiceDate: date
+    - amount: double
+    + addDetail(detail: InvoiceDetail): void
+}
+
+class InvoiceDetail {
+    - id: int
+    - product: Product
+    - quantity: int
+}
+
+Customer "1" *--* "1..*" Order : places
+Order "1" *-- "1..*" Food : contains
+Supplier "1" *-- "1..*" Ingredient : supplies
+Product "1" *-- "1..*" Ingredient : made from
+Employee "1" -- "1..*" Order : creates
+Employee "1" -- "1..1" Inventory : manages
+Invoice "1" *-- "1" Order : invoiced for
+Invoice "1" *-- "1..*" InvoiceDetail : has details
+Shipper "1" -- "1..*" Order : delivers
